@@ -48,6 +48,11 @@ void print_newline() {
     clear_row(NUM_COLS - 1);
 }
 
+void print_set_x_y(size_t Lcol , size_t Lrow){
+    col = Lcol;
+    row = Lrow;
+}
+
 void print_char(char character) {
     if (character == '\n') {
         print_newline();
