@@ -2,6 +2,7 @@
 #include "print.h"
 #include "nanosleep/nanosleep.h"
 #include "cmostime.h"
+#include <stdbool.h>
 
 void seed_rand() {
     struct rtcdate r;
@@ -58,18 +59,18 @@ void kernel_main() {
     // Input some string
     printf("\n\nPlease enter your name: ");
     int max_len = 50;
-    char str[max_len];
-    if (input_str(str, max_len)) {
-        printf("\nYour name is: ");
-        printf(str);
+    char usrname[max_len];
+    if (input_str(usrname, max_len)) {
+        printf("\nHello, ");
+        printf(usrname);
     }
 
-    while (1==1) {
-        printf("\n%s@gOS$ ", str);
-        char input[100];
-        if (input_str(input, 100)) {
-            printf("\n%s", input);
-        }
+    printf("\n%s@gOS$ ", usrname);
+    int max_query_len = 255;
+    char input[max_query_len];
+    while (input_str(input, max_query_len)) {
+        printf("\n%s", input);
+        show_date_time();
     }
 
     printf("\n\nGood bye!");
