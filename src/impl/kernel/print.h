@@ -44,3 +44,5 @@ void pprint_int(ui8 column, ui8 row, i32 num, ui8 color, ui8 bg_color);
 void pprint_int_pad(ui8 column, ui8 row, i32 num, ui8 pad, ui8 color, ui8 bg_color);
 void pprint_int_pad0(ui8 column, ui8 row, i32 num, ui8 pad, ui8 color, ui8 bg_color);
 void print_set_x_y(size_t Lcol , size_t Lrow);
+
+void printf(const char* fmt, ...);

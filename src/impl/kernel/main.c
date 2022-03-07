@@ -1,5 +1,5 @@
 #include "types.h"
-#import "print.h"
+#include "print.h"
 #include "nanosleep/nanosleep.h"
 #include "cmostime.h"
 
@@ -38,9 +38,9 @@ void kernel_main() {
 
 
     print_clear();
-    print_set_x_y(1, 1);
+    print_set_x_y(1, 0);
     print_set_color(PRINT_COLOR_BROWN, PRINT_COLOR_BLACK);
-    print_str("Welcome to gOS - the duck OS!\n\n");
+    printf("Welcome to gOS - the duck OS!\n\n");
 
     seed_rand();
     // Try to beep with PC speaker
@@ -49,22 +49,30 @@ void kernel_main() {
     // Get and display CPU verndor string
     char vendor_str[13];
     CPUID_vendor_string(vendor_str);
-    print_str("Detected CPU vendor string: ");
-    print_str(vendor_str);
+    printf("Detected CPU vendor string: ");
+    printf(vendor_str);
 
     nanosleep_init();
 
 
     // Input some string
-    print_str("\n\nPlease enter your name: ");
+    printf("\n\nPlease enter your name: ");
     int max_len = 50;
     char str[max_len];
     if (input_str(str, max_len)) {
-        print_str("\nYour name is: ");
-        print_str(str);
+        printf("\nYour name is: ");
+        printf(str);
     }
 
-    print_str("\n\nGood bye!");
+    while (1==1) {
+        printf("\n%s@gOS$ ", str);
+        char input[100];
+        if (input_str(input, 100)) {
+            printf("\n%s", input);
+        }
+    }
+
+    printf("\n\nGood bye!");
 
     // In the end, continue updating date/time
     while (true) {

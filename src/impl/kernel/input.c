@@ -4,7 +4,6 @@
 #include "types.h"
 #include "chars.h"
 #include "utils.h"
-#include "color_spin.h"
 
 static ui8 get_input_keycode() {
     ui8 code = 0;
@@ -12,8 +11,6 @@ static ui8 get_input_keycode() {
         nanosleep(10000);
 
         show_date_time();
-        //show_color_spin();
-        //show_random_ship();
 
         code = inb(KEYBOARD_PORT);
     }
