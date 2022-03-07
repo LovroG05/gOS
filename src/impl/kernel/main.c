@@ -42,7 +42,7 @@ void kernel_main() {
     print_set_color(PRINT_COLOR_BROWN, PRINT_COLOR_BLACK);
     print_str("Welcome to gOS - the duck OS!\n\n");
 
-    //seed_rand();
+    seed_rand();
     // Try to beep with PC speaker
     // beep();
 
@@ -52,18 +52,8 @@ void kernel_main() {
     print_str("Detected CPU vendor string: ");
     print_str(vendor_str);
 
-    // Wait for 3 seconds, while updating date/time, color spin and randomly moving ship
-    print_str("\n\nWaiting for exactly 3 seconds: ");
     nanosleep_init();
-    for (int i = 0; i < 30; i++) {
-        // Sleep for 100 ms and then print a dot
-        for (int w = 0; w < 10; ++w) {
-            // Sleep for 10 ms
-            nanosleep(10000);
-            show_date_time();
-        }
-        print_str(".");
-    }
+
 
     // Input some string
     print_str("\n\nPlease enter your name: ");

@@ -12,8 +12,8 @@ static ui8 get_input_keycode() {
         nanosleep(10000);
 
         show_date_time();
-        show_color_spin();
-        show_random_ship();
+        //show_color_spin();
+        //show_random_ship();
 
         code = inb(KEYBOARD_PORT);
     }
