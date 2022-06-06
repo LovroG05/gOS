@@ -1,25 +1,47 @@
+#include "cursor.h"
 #include "types.h"
 #include "print.h"
 #include "utils.h"
 
-#define FB_COMMAND_PORT         0x3D4
-#define FB_DATA_PORT            0x3D5
 
-#define FB_HIGH_BYTE_COMMAND    14
-#define FB_LOW_BYTE_COMMAND     15
-
-void enable_cursor(ui8 cursor_start, ui8 cursor_end) {
-	outb(FB_COMMAND_PORT, 0x0A);
-	outb(FB_DATA_PORT, (inb(FB_DATA_PORT) & 0xC0) | cursor_start);
- 
-	outb(FB_COMMAND_PORT, 0x0B);
-	outb(FB_DATA_PORT, (inb(FB_DATA_PORT) & 0xE0) | cursor_end);
+void set_cursor(int offset) {
+    offset /= 2;
+    port_byte_out(VGA_CTRL_REGISTER, VGA_OFFSET_HIGH);
+    port_byte_out(VGA_DATA_REGISTER, (unsigned char) (offset >> 8));
+    port_byte_out(VGA_CTRL_REGISTER, VGA_OFFSET_LOW);
+    port_byte_out(VGA_DATA_REGISTER, (unsigned char) (offset & 0xff));
 }
 
-void move_cursor(ui16 column, ui16 row) {
-    ui16 pos = column + row * NUM_COLS;
-    outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
-    outb(FB_DATA_PORT, ((pos >> 8) & 0xFF));
-    outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
-    outb(FB_DATA_PORT, pos & 0xFF);
+int get_cursor() {
+    port_byte_out(VGA_CTRL_REGISTER, VGA_OFFSET_HIGH);
+    int offset = port_byte_in(VGA_DATA_REGISTER) << 8;
+    port_byte_out(VGA_CTRL_REGISTER, VGA_OFFSET_LOW);
+    offset += port_byte_in(VGA_DATA_REGISTER);
+    return offset * 2;
+}
+
+int get_row_from_offset(int offset) {
+    return offset / (2 * MAX_COLS);
+}
+
+int get_offset(int col, int row) {
+    return 2 * (row * MAX_COLS + col);
+}
+
+int move_offset_to_new_line(int offset) {
+    return get_offset(0, get_row_from_offset(offset) + 1);
+}
+
+int scroll_ln(int offset) {
+    memory_copy(
+            (char *) (get_offset(0, 1) + VIDEO_ADDRESS),
+            (char *) (get_offset(0, 0) + VIDEO_ADDRESS),
+            MAX_COLS * (MAX_ROWS - 1) * 2
+    );
+
+    for (int col = 0; col < MAX_COLS; col++) {
+        set_char_at_video_memory(' ', get_offset(col, MAX_ROWS - 1));
+    }
+
+    return offset - 2 * MAX_COLS;
 }

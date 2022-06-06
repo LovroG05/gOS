@@ -10,14 +10,10 @@ static ui8 get_input_keycode() {
     while (!code) {
         nanosleep(10000);
 
-        show_date_time();
+        // show_date_time();
 
-        code = inb(KEYBOARD_PORT);
+        code = port_byte_in(KEYBOARD_PORT);
     }
-    
-    // This outputs key code at the bottom of the screen for debug
-    pprint_str(66, 23, "Keycode:", PRINT_COLOR_YELLOW, PRINT_COLOR_BLACK);
-    pprint_int_pad(75, 23, code, 4, PRINT_COLOR_YELLOW, PRINT_COLOR_BLACK);
 
     return code;
 }

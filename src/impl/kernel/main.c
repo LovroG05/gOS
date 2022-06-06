@@ -17,25 +17,23 @@ void seed_rand() {
     );
 }
 
-void show_date_time() {
-    struct rtcdate r;
-    cmostime(&r);
-    pprint_int(0, 23, r.year, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_char(4, 23, '-', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_int_pad0(5, 23, r.month, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_char(7, 23, '-', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_int_pad0(8, 23, r.day, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+// void show_date_time() {
+//     struct rtcdate r;
+//     cmostime(&r);
+//     pprint_int(0, 23, r.year, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_char(4, 23, '-', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_int_pad0(5, 23, r.month, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_char(7, 23, '-', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_int_pad0(8, 23, r.day, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
 
-    pprint_int_pad0(11, 23, r.hour, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_char(13, 23, ':', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_int_pad0(14, 23, r.minute, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_char(16, 23, ':', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-    pprint_int_pad0(17, 23, r.second, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
-}
+//     pprint_int_pad0(11, 23, r.hour, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_char(13, 23, ':', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_int_pad0(14, 23, r.minute, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_char(16, 23, ':', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+//     pprint_int_pad0(17, 23, r.second, 2, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+// }
 
 void print_duck() {
-    print_set_x_y(0, 0);
-    print_set_color(PRINT_COLOR_BROWN, PRINT_COLOR_BLACK);
     printf("           ,-.\n");
     printf("       ,--' ~.).\n");
     printf("     ,'         `.\n");
@@ -60,10 +58,9 @@ void print_duck() {
 
 void kernel_main() {
     // Enables display of cursor on screen
-    enable_cursor(13, 15);
+    set_cursor(0);
 
-
-    print_clear();
+    clear_screen();
     
 
     nanosleep_init();
@@ -71,7 +68,6 @@ void kernel_main() {
 
     print_duck();
 
-    print_set_color(PRINT_COLOR_BROWN, PRINT_COLOR_BLACK);
     printf("Welcome to gOS - the duck OS!\n");
 
     seed_rand();
@@ -85,8 +81,8 @@ void kernel_main() {
     printf(vendor_str);
 
 
-    while (true) {
-        nanosleep(10000);
-        show_date_time();
-    }
+    // while (true) {
+    //     nanosleep(10000);
+    //     show_date_time();
+    // }
 }

@@ -6,15 +6,15 @@
 static ui8 pit_channel = 0;
 
 static ui16 get_pit_count() {
-    outb(0x43, pit_channel << 6); // Latch count before reading
-    return inb(0x40 + pit_channel) | inb(0x40 + pit_channel) << 8;
+    port_byte_out(0x43, pit_channel << 6); // Latch count before reading
+    return port_byte_in(0x40 + pit_channel) | port_byte_in(0x40 + pit_channel) << 8;
 }
 
 // Get initial hint
 ui16 nanosleep_exact_init() {
-    outb(0x43, 0x34 | (pit_channel << 6)); // Config: low/high byte, rate generator
-    outb(0x40 + pit_channel, 0xFF); // Low byte initial count
-    outb(0x40 + pit_channel, 0xFF); // High byte initial count
+    port_byte_out(0x43, 0x34 | (pit_channel << 6)); // Config: low/high byte, rate generator
+    port_byte_out(0x40 + pit_channel, 0xFF); // Low byte initial count
+    port_byte_out(0x40 + pit_channel, 0xFF); // High byte initial count
     
     return get_pit_count();
 }

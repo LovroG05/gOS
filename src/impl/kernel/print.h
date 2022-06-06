@@ -31,18 +31,8 @@ enum {
     PRINT_COLOR_WHITE = 15,
 };
 
-void print_clear();
-void print_char(char character);
-void print_str(char* string);
-void print_set_color(uint8_t foreground, uint8_t background);
-struct ColorChar get_screen_color_char(ui8 column, ui8 row);
-size_t input_pos;
-
-void pprint_char(ui8 column, ui8 row, ui8 character, ui8 color, ui8 bg_color);
-void pprint_str(ui8 column, ui8 row, char* str, ui8 color, ui8 bg_color);
-void pprint_int(ui8 column, ui8 row, i32 num, ui8 color, ui8 bg_color);
-void pprint_int_pad(ui8 column, ui8 row, i32 num, ui8 pad, ui8 color, ui8 bg_color);
-void pprint_int_pad0(ui8 column, ui8 row, i32 num, ui8 pad, ui8 color, ui8 bg_color);
-void print_set_x_y(size_t Lcol , size_t Lrow);
-
+void print_string(char *string);
+void clear_screen();
+void print_char(unsigned char c);
+void clear_col();
 void printf(const char* fmt, ...);

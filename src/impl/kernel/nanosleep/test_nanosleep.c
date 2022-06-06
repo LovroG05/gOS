@@ -5,10 +5,10 @@
 // Fills screen with PIT counter
 void test_pit_map() {
     for (ui32 i = 0; i < 2000; ++i) {
-        ui16 counter = inb(0x40);
+        ui16 counter = port_byte_in(0x40);
         ui8 column = i % 80;
         ui8 row = i / 80;
-        pprint_char(column, row, 47 + counter, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+        print_char(47 + counter);
         asm volatile("pause");
     }
 }
@@ -16,10 +16,10 @@ void test_pit_map() {
 // Fills screen with PIT counter divided by 26
 void test_pit_map26() {
     for (ui32 i = 0; i < 2000; ++i) {
-        ui16 counter = inb(0x40) / 26;
+        ui16 counter = port_byte_in(0x40) / 26;
         ui8 column = i % 80;
         ui8 row = i / 80;
-        pprint_char(column, row, 48 + counter, PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+        print_char(48 + counter);
         for (ui32 w = 0; w < 10; ++w) {
             asm volatile("pause");
         }
@@ -29,10 +29,10 @@ void test_pit_map26() {
 // Shows red when more than 25 PIT ticks were missed and green when repeatedly read same value
 void test_pit_map2() {
     ui16 pos = 0;
-    ui16 old_counter = inb(0x40);
+    ui16 old_counter = port_byte_in(0x40);
     ui32 repeats = 0;
     while (pos < 2000) {
-        ui16 counter = inb(0x40) / 26;
+        ui16 counter = port_byte_in(0x40) / 26;
         for (ui32 w = 0; w < 1; ++w) {
             asm volatile("pause");
         }
@@ -48,7 +48,7 @@ void test_pit_map2() {
         } else if (repeats) {
             color = PRINT_COLOR_GREEN;
         }
-        pprint_char(column, row, 48 + counter, color, PRINT_COLOR_BLACK);
+        print_char(48 + counter);
         pos++;
         repeats = 0;
         old_counter = counter;
@@ -61,7 +61,7 @@ void test_nanosleep() {
         nanosleep(1000000);
         ui8 column = i % 80;
         ui8 row = i / 80;
-        pprint_char(column, row, 'W', PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+        print_char("W");
     }
 }
 
@@ -73,6 +73,6 @@ void test_nanosleep_exact() {
         hint = nanosleep_exact(1000000 / divider, hint);
         ui8 column = i % 80;
         ui8 row = i / 80;
-        pprint_char(column, row, 48 + (i % divider), PRINT_COLOR_WHITE, PRINT_COLOR_BLACK);
+        print_char(48 + (i % divider));
     }
 }

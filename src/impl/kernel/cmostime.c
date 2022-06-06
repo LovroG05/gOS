@@ -17,10 +17,10 @@
 #define YEAR    0x09
 
 static uint cmos_read(uint reg) {
-  outb(CMOS_PORT,  reg);
+  port_byte_out(CMOS_PORT,  reg);
   nanosleep(10);
 
-  return inb(CMOS_RETURN);
+  return port_byte_in(CMOS_RETURN);
 }
 
 static void fill_rtcdate(struct rtcdate *r) {

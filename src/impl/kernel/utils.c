@@ -47,22 +47,21 @@ void itoa(int num, char *str, bool set_trailing_zero) {
   }
 }
 
-ui8 inb(ui16 port) {
-  ui8 ret;
-  asm volatile("inb %1, %0"
-               : "=a"(ret)
-               : "d"(port));
-  return ret;
+unsigned char port_byte_in(unsigned short port) {
+    unsigned char result;
+    __asm__("in %%dx, %%al" : "=a" (result) : "d" (port));
+    return result;
 }
 
-void outb(ui16 port, ui8 val) {
-  asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-  /* There's an outb %al, $imm8  encoding, for compile-time constant port numbers that fit in 8b.  (N constraint).
-    * Wider immediate constants would be truncated at assemble-time (e.g. "i" constraint).
-    * The  outb  %al, %dx  encoding is the only option for all other cases.
-    * %1 expands to %dx because  port  is a uint16_t.  %w1 could be used if we had the port number a wider C type */
+void port_byte_out(unsigned short port, unsigned char data) {
+    __asm__("out %%al, %%dx" : : "a" (data), "d" (port));
 }
 
+void set_char_at_video_memory(char character, int offset) {
+    unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
+    vidmem[offset] = character;
+    vidmem[offset + 1] = BROWN_ON_BLACK;
+}
 /*
 keep the cpu busy for doing nothing
 so that io port will not be processed by cpu
@@ -86,4 +85,11 @@ int memcmp(const void *v1, const void *v2, uint n) {
   }
 
   return 0;
+}
+
+void memory_copy(char *source, char *dest, int nbytes) {
+    int i;
+    for (i = 0; i < nbytes; i++) {
+        *(dest + i) = *(source + i);
+    }
 }
